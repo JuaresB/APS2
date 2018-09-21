@@ -8,10 +8,10 @@ export default class App extends React.Component {
   render() { 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Bem-Vindo ao ####</Text>
+        <Text style={styles.text}>Bem-Vindo ao #####</Text>
         <Button style={styles.button} title={"Navegar!"} onPress={this._onPressButton}/>
       </View> 
-    );
+    ); 
   }
 }
  
