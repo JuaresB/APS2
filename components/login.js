@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { TextInput, Alert, StyleSheet, Text, View, Button } from 'react-native';
 import Auth0 from 'react-native-auth0';
+import Teste from './test' 
 
 export default class Login extends Component {
     constructor(props){
@@ -15,6 +16,7 @@ export default class Login extends Component {
     render() {
         return (
             <View>  
+                <Teste/>
                 <Text style={styles.text}>Insira seu e-mail</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
