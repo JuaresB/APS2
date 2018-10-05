@@ -1,35 +1,47 @@
 import React, { Component } from 'react'
 import { TextInput, Alert, StyleSheet, Text, View, Button } from 'react-native';
 
-export default class Login extends Component {
+export default class Signup extends Component {
     constructor(props){
         super(props)
         this.state = {
+            name: "",
             email: "",
             password: "",
         }
-        this.SignIn = this.SignIn.bind(this)
+        this.Signup = this.Signup.bind(this)
     }
-    SignIn(){
-        this.props.onSignIn()
+    Signup(){
+        this.props.onSignup()
     }
     render() {
         return (
             <View style={styles.container}>  
-                <Text style={styles.title}>Wandy</Text>
-                <Text style={styles.text}>Bem-vindo!</Text>
+                <Text style={styles.text}>Cadastro</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         underlineColorAndroid={'transparent'}
                         style={styles.input} 
-                        onChangeText={(email) => {
-                            this.setState({email})
-                            console.log(email)
+                        onChangeText={(name) => {
+                            this.setState({name})
+                            console.log(name)
                         }}
-                        value={this.state.email}
-                        placeholder="E-mail"
+                        value={this.state.name}
+                        placeholder="Nome"
                     />
                 </View> 
+                <View style={styles.inputContainer}>
+                    <TextInput 
+                        underlineColorAndroid={'transparent'}
+                        style={styles.input}
+                        onChangeText={(email) => {
+                            this.setState({email})
+                            console.log(email) 
+                        }}
+                        value={this.state.email}
+                        placeholder="Email"
+                    />
+                </View>
                 <View style={styles.inputContainer}>
                     <TextInput 
                         underlineColorAndroid={'transparent'}
@@ -41,10 +53,9 @@ export default class Login extends Component {
                         value={this.state.password}
                         placeholder="Senha"
                     />
-                </View>
-                
+                </View>  
                 <View style={styles.button}>
-                    <Button title={"Entrar"} onPress={this.SignIn} color="#57bc90"/>
+                    <Button title={"Entrar"} onPress={this.Signup} color="#57bc90"/>
                 </View>
             </View> 
         )
@@ -52,10 +63,6 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 40,
-        marginBottom: 30, 
-    },
     container: {
       flex: 1,
       backgroundColor: '#77c9d4',
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
     },
     text: {
       fontSize: 30,
-      marginBottom: 50, 
+      marginBottom: 40,
     },
     button: {
     },
@@ -81,7 +88,6 @@ const styles = StyleSheet.create({
         marginBottom: 20, 
         display: "flex",
         flexDirection: "row",
-        alignItems: "center",
-         
+        alignItems: "center",    
     }
   });

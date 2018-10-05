@@ -1,7 +1,8 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, Button } from 'react-native';
 import Login from './components/login'
-
+import Signup from './components/signup'
+ 
 export default class App extends React.Component {
   constructor(props){
     super(props)
@@ -27,13 +28,10 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         {this.state.tela === "tela1" &&
-          <Login onPress={this._onPressButton} cor="red" />
+          <Login onSignIn={this._onPressButton} /> 
         }
         {this.state.tela === "tela2" &&
-        <View> 
-          <Text style={styles.text}>Bem-Vindo a tela 2!</Text>
-          <Button style={styles.button} title={"Ir pra tela 1!"} onPress={this._onPressButton2}/>
-        </View>
+        <Signup onSignup={this._onPressButton2}/>
         } 
       </View> 
     );  
