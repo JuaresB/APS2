@@ -9,9 +9,13 @@ export default class Login extends Component {
             password: "",
         }
         this.SignIn = this.SignIn.bind(this)
+        this.SignUp = this.SignUp.bind(this)
     }
     SignIn(){
         this.props.onSignIn()
+    }
+    SignUp(){
+            this.props.onSignUp()
     }
     render() {
         return (
@@ -44,7 +48,11 @@ export default class Login extends Component {
                 </View>
                 
                 <View style={styles.button}>
-                    <Button title={"Entrar"} onPress={this.SignIn} color="#57bc90"/>
+                    <Button title={"Entrar"} onPress={this.SignIn} color="#663399"/>
+                </View>
+
+                <View style={styles.button2}>
+                    <Button title={"Sign Up"} onPress={this.SignUp} color="#663399"/>
                 </View>
             </View> 
         )
@@ -53,22 +61,30 @@ export default class Login extends Component {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 40,
-        marginBottom: 30, 
-    },
+        fontSize: 60, 
+        marginBottom: 30,
+        fontFamily: 'monospace',  
+    },  
     container: {
       flex: 1,
-      backgroundColor: '#77c9d4',
+      backgroundColor: '#77c9d4', 
+      //backgroundColor: "#b0e0e6",
       alignItems: 'center', 
       justifyContent: 'center', 
       width: "100%",
       height: "100%",
     },
     text: {
-      fontSize: 30,
+      fontSize: 30,  
       marginBottom: 50, 
-    },
+      color: "#808080", 
+    },  
     button: {
+    },
+    button2: {
+       position: 'absolute',
+       bottom: 15,
+       right: 15,  
     },
     input: { 
         width: '100%',
