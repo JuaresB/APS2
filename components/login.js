@@ -39,7 +39,7 @@ export default class Login extends Component {
                             console.log(password) 
                         }}
                         value={this.state.password}
-                        placeholder="Senha"
+                        placeholder="Senha" 
                     />
                 </View>
                 

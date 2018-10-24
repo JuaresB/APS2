@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TextInput, Alert, StyleSheet, Text, View, Button } from 'react-native';
+import { TextInput, StyleSheet, Text, View, Button } from 'react-native';
 
 export default class Signup extends Component {
     constructor(props){
