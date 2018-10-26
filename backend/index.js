@@ -1,6 +1,8 @@
 var express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
+var models = require('./models');
+const cors = require('cors');
 
 var schema = buildSchema(`
   type User {
@@ -26,53 +28,52 @@ var schema = buildSchema(`
   }
 `);
 
-class User {
-  constructor(id, {email,password,name}){
-    this.id = id
-    this.email = email
-    this.password = password
-    this.name = name
-  }
-}
 
-// Maps id to User object
-var fakeDatabase = {
-  'a': {
-    email: 'juares@juares.com',
-    name: 'juares',
-    password: 'juares',
-    id: 'a',
-  },
-  'b': {
-    email: 'tora@tora.com',
-    name: 'tora',
-    password: 'tora',
-    id: 'b',
-  },
-};
 
 var root = {
-  user: function ({id}) {
-    if (!fakeDatabase[id]) {
-      throw new Error('no user exists with id ' + id);
+  user: async function ({id}) {
+    const user = await models.User.findById(id)
+    if (!user) {
+      throw new Error('O usuário de id:' + id + ' não existe.');
     } 
-    return new User(id,fakeDatabase[id]);
+    return user;
   },
-  createUser: function({input}) {
-    var id = require('crypto').randomBytes(10).toString('hex');
-    fakeDatabase[id] = input;
-    return new User(id, input);
-  },
-  updateUser: function(id,{input}) {
-    if (!fakeDatabase[id]) {
-      throw new Error('no user exists with id ' + id);
+  createUser: async function({input}) {
+    const sameEmail = await models.User.findAll({
+      where: {
+        email: input.email
+      }
+    })
+    if(sameEmail.length > 0) {
+      console.log(sameEmail)
+      throw new Error('O usuário de email: ' + input.email +' já existe.')
+    } else {
+      const user = await models.User.create(input)
+      return user;
     }
-    fakeDatabase[id] = input;
-    return new User(id, input);
-  }
+    
+  },
+  updateUser: async function({id,input}) {
+    const user = await models.User.findById(id)
+    if (!user) {
+      throw new Error('no user exists with id ' + id);
+    } else {
+      const updatedUser = await models.User.update(id,input)
+      return updatedUser;
+    }
+  },
 };
 
+models.sequelize.sync();
+
 var app = express();
+
+app.use(cors({
+  'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With', 'X-Amz-Security-Token', 'x-amz-date'],
+  'origin': '*',
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+}));
+
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,

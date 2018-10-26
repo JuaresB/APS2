@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TextInput, StyleSheet, Text, View, Button } from 'react-native';
+import { TextInput, KeyboardAvoidingView,StyleSheet, Text, View, Button } from 'react-native';
 
 export default class Signup extends Component {
     constructor(props){
@@ -9,16 +9,68 @@ export default class Signup extends Component {
             email: "",
             password: "",
             isChecked:false,
+            error: false,
+            errorMessage: ""
         }
         console.log(this.state)
         this.Signup = this.Signup.bind(this)
     }
     Signup(){
-        this.props.onSignup()
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!emailRegex.test(String(this.state.email).toLowerCase())){
+            console.log("Email inválido.")
+            this.setState({
+                error: true,
+                errorMessage: "Email inválido."
+            })
+        } else if(this.state.name.length < 3) {
+            console.log("Email inválido.")
+            this.setState({
+                error: true,
+                errorMessage: "Nome inválido."
+            })
+        } else if(this.state.password.length < 6) {
+            console.log("Email inválido.")
+            this.setState({
+                error: true,
+                errorMessage: "Senha inválida."
+            })
+        } else {
+            const query = `mutation {
+                createUser(input: {
+                    name: "${this.state.name}",
+                    email: "${this.state.email}",
+                    password: "${this.state.password}"
+                })
+            }`
+            console.log(query)
+            console.log(this.state) 
+            fetch('http://192.168.0.10:4000/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query }),
+            })
+            .then(res => {
+                console.log(res, res.status)
+                if(res.status === "200") console.log("OK!")
+                res.json()
+            }) 
+            .then(res => {
+                console.log(res)
+                //this.props.onSignup()
+            })
+            .catch((err) => {
+                console.log(err)
+                this.setState({
+                    error: true,
+                    errorMessage: err
+                })
+            })
+        }
     }
     render() {
         return (
-            <View style={styles.container}>  
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>  
                 <Text style={styles.text}>Cadastro</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -38,7 +90,7 @@ export default class Signup extends Component {
                         style={styles.input}
                         onChangeText={(email) => {
                             this.setState({email})
-                            console.log(email) 
+                            console.log(email)  
                         }}
                         value={this.state.email}
                         placeholder="Email"
@@ -54,12 +106,13 @@ export default class Signup extends Component {
                         }}
                         value={this.state.password}
                         placeholder="Senha"
+                        secureTextEntry
                     />
                 </View>  
                 <View style={styles.button}>
                     <Button title={"Entrar"} onPress={this.Signup} color="#663399"/>
                 </View>
-            </View> 
+            </KeyboardAvoidingView> 
         )
     }
 }

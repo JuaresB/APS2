@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TextInput, Alert, StyleSheet, Text, View, Button } from 'react-native';
+import { TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Button } from 'react-native';
 
 export default class Login extends Component {
     constructor(props){
@@ -19,7 +19,7 @@ export default class Login extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>  
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>  
                 <Text style={styles.title}>Wandy</Text>
                 <Text style={styles.text}>Bem-vindo!</Text>
                 <View style={styles.inputContainer}>
@@ -44,6 +44,7 @@ export default class Login extends Component {
                         }}
                         value={this.state.password}
                         placeholder="Senha" 
+                        secureTextEntry
                     />
                 </View>
                 
@@ -54,7 +55,7 @@ export default class Login extends Component {
                 <View style={styles.button2}>
                     <Button title={"Sign Up"} onPress={this.SignUp} color="#663399"/>
                 </View>
-            </View> 
+            </KeyboardAvoidingView> 
         )
     }
 }
