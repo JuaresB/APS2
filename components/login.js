@@ -11,8 +11,51 @@ export default class Login extends Component {
         this.SignIn = this.SignIn.bind(this)
         this.SignUp = this.SignUp.bind(this)
     }
-    SignIn(){
-        this.props.onSignIn()
+    async SignIn(){
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!emailRegex.test(String(this.state.email).toLowerCase())){
+            console.log("Email inválido.")
+            this.setState({
+                error: true, 
+                errorMessage: "Email inválido."
+            })
+        } else if(this.state.password.length < 6) {
+            console.log("Email inválido.")
+            this.setState({
+                error: true,
+                errorMessage: "Senha inválida."
+            })
+        } else {
+            const query = `{
+                verifyUser(
+                    email: "${this.state.email}",
+                    password: "${this.state.password}"
+                ){
+                    id
+                    name
+                    email
+                }
+            }`
+            console.log(query) 
+            console.log(this.state) 
+            try {
+                let response = await fetch('http://192.168.0.10:4000/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query }),
+                })
+                console.log(response)
+                let responseJson = await response.json()
+                console.log(responseJson.data)
+                this.props.onSignIn()
+            } catch(err) {
+                console.log(err)
+                this.setState({
+                    error: true,
+                    errorMessage: err
+                })
+            }
+        }
     }
     SignUp(){
             this.props.onSignup()

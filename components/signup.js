@@ -15,7 +15,7 @@ export default class Signup extends Component {
         console.log(this.state)
         this.Signup = this.Signup.bind(this)
     }
-    Signup(){
+    async Signup(){
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!emailRegex.test(String(this.state.email).toLowerCase())){
             console.log("Email inválido.")
@@ -41,31 +41,31 @@ export default class Signup extends Component {
                     name: "${this.state.name}",
                     email: "${this.state.email}",
                     password: "${this.state.password}"
-                })
+                }){
+                    id
+                    name
+                    email
+                }
             }`
             console.log(query)
             console.log(this.state) 
-            fetch('http://192.168.0.10:4000/graphql', {
+            try {
+                let response = await fetch('http://192.168.0.10:4000/graphql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: query }),
-            })
-            .then(res => {
-                console.log(res, res.status)
-                if(res.status === "200") console.log("OK!")
-                res.json()
-            }) 
-            .then(res => {
-                console.log(res)
-                //this.props.onSignup()
-            })
-            .catch((err) => {
+                })
+                console.log(response)
+                let responseJson = await response.json()
+                console.log(responseJson.data)
+                this.props.onSignup()
+            } catch(err) {
                 console.log(err)
                 this.setState({
                     error: true,
                     errorMessage: err
                 })
-            })
+            }
         }
     }
     render() {

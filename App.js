@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, StyleSheet, Text, View, Button } from 'react-native';
 import Login from './components/login'
 import Signup from './components/signup'
+import Navigation from './components/navigation'
  
 export default class App extends React.Component {
   constructor(props){
@@ -20,7 +21,7 @@ export default class App extends React.Component {
   }
   onSignIn() {
     this.setState({
-      tela: "signin" 
+      tela: "navigation" 
     });
   }
   onSendSignupForm() {
@@ -38,7 +39,10 @@ export default class App extends React.Component {
         {this.state.tela === "signup" &&
           <Signup onSignup={this.onSendSignupForm}/>
         } 
-      </View>  
+        {this.state.tela === "navigation" &&
+          <Navigation />
+        } 
+      </View>   
     );  
   }
 }

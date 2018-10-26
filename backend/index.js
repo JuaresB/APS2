@@ -20,6 +20,7 @@ var schema = buildSchema(`
 
   type Query {
     user(id: ID!): User
+    verifyUser(email: String, password: String): User
   }
 
   type Mutation {
@@ -62,6 +63,20 @@ var root = {
       return updatedUser;
     }
   },
+  verifyUser: async function({email, password}){
+    const user = await models.User.find({
+      where: {
+        email: email
+      }
+    }) 
+    if (!user){
+      throw new Error("O usuário não existe")
+    } else if(!(user.password === password)) {
+      throw new Error("O usuário não existe")
+    } else { 
+      return user
+    }
+  }
 };
 
 models.sequelize.sync();
