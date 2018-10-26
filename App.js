@@ -33,7 +33,7 @@ export default class App extends React.Component {
         {this.state.tela === "tela2" &&
         <Signup onSignup={this._onPressButton2}/>
         } 
-      </View> 
+      </View>  
     );  
   }
 }

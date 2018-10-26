@@ -10,6 +10,7 @@ export default class Signup extends Component {
             password: "",
             isChecked:false,
         }
+        console.log(this.state)
         this.Signup = this.Signup.bind(this)
     }
     Signup(){
@@ -58,17 +59,6 @@ export default class Signup extends Component {
                 <View style={styles.button}>
                     <Button title={"Entrar"} onPress={this.Signup} color="#663399"/>
                 </View>
-                {/* <View>
-                    <CheckBox
-                        style={{flex: 1, padding: 10}}
-                        onClick={()=>{ this.setState({
-                                isChecked:!this.state.isChecked
-                            })
-                        }}   
-                        isChecked={this.state.isChecked}
-                        leftText={"CheckBox"} 
-                    />
-                </View> */}
             </View> 
         )
     }
