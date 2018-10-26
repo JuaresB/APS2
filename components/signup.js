@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TextInput, StyleSheet, Text, View, Button } from 'react-native';
-import  CheckBox  from 'react-native-elements' 
+import CheckBox from 'react-native-check-box'
 
 export default class Signup extends Component {
     constructor(props){
@@ -58,17 +58,6 @@ export default class Signup extends Component {
                 </View>  
                 <View style={styles.button}>
                     <Button title={"Entrar"} onPress={this.Signup} color="#663399"/>
-                </View>
-                <View>
-                    <CheckBox
-                        style={{flex: 1, padding: 10}}
-                        onClick={()=>{ this.setState({
-                                isChecked:!this.state.isChecked
-                            })
-                        }}   
-                        isChecked={this.state.isChecked}
-                        leftText={"CheckBox"} 
-                    />
                 </View>
             </View> 
         )

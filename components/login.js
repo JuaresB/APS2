@@ -15,7 +15,7 @@ export default class Login extends Component {
         this.props.onSignIn()
     }
     SignUp(){
-            this.props.onSignUp()
+            this.props.onSignup()
     }
     render() {
         return (
