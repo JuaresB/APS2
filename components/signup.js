@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { TextInput, KeyboardAvoidingView,StyleSheet, Text, View, Button } from 'react-native';
+import { CheckBox } from 'react-native-elements'
 
 export default class Signup extends Component {
     constructor(props){
@@ -116,6 +117,13 @@ export default class Signup extends Component {
                         secureTextEntry
                     />
                 </View>
+                <CheckBox
+                  containerStyle={{marginBottom:10, backgroundColor:"transparent", borderColor: "transparent"}}
+                  uncheckedColor="#663399"
+                  title='Sou deficiente visual'
+                  checked={this.state.isChecked}
+                  onPress={() => this.setState({isChecked: !this.state.isChecked})}
+                />
                 {this.state.error &&
                 <Text style={{marginBottom: 10}}>{this.state.errorMessage}</Text>
                 }
