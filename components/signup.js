@@ -30,7 +30,7 @@ export default class Signup extends Component {
                 errorMessage: "Nome inválido."
             })
         } else if(this.state.password.length < 6) {
-            console.log("Email inválido.")
+            console.log("Senha inválida.")
             this.setState({
                 error: true,
                 errorMessage: "Senha inválida."
@@ -48,9 +48,9 @@ export default class Signup extends Component {
                 }
             }`
             console.log(query)
-            console.log(this.state) 
+            console.log(this.state)
             try {
-                let response = await fetch('http://192.168.0.10:4000/graphql', {
+                let response = await fetch('http://192.168.43.190:4000/graphql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: query }),
@@ -58,7 +58,14 @@ export default class Signup extends Component {
                 console.log(response)
                 let responseJson = await response.json()
                 console.log(responseJson.data)
-                this.props.onSignup()
+                if(responseJson.data.createUser) this.props.onSignup()
+                else {
+                  this.setState({
+                    error: true,
+                    errorMessage: "Esse e-mail já está cadastrado."
+                  })
+                }
+
             } catch(err) {
                 console.log(err)
                 this.setState({
@@ -70,12 +77,12 @@ export default class Signup extends Component {
     }
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>  
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <Text style={styles.text}>Cadastro</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         underlineColorAndroid={'transparent'}
-                        style={styles.input} 
+                        style={styles.input}
                         onChangeText={(name) => {
                             this.setState({name})
                             console.log(name)
@@ -83,46 +90,49 @@ export default class Signup extends Component {
                         value={this.state.name}
                         placeholder="Nome"
                     />
-                </View> 
+                </View>
                 <View style={styles.inputContainer}>
-                    <TextInput 
+                    <TextInput
                         underlineColorAndroid={'transparent'}
                         style={styles.input}
                         onChangeText={(email) => {
                             this.setState({email})
-                            console.log(email)  
+                            console.log(email)
                         }}
                         value={this.state.email}
                         placeholder="Email"
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput 
+                    <TextInput
                         underlineColorAndroid={'transparent'}
                         style={styles.input}
                         onChangeText={(password) => {
                             this.setState({password})
-                            console.log(password) 
+                            console.log(password)
                         }}
                         value={this.state.password}
                         placeholder="Senha"
                         secureTextEntry
                     />
-                </View>  
-                <View style={styles.button}>
-                    <Button title={"Entrar"} onPress={this.Signup} color="#663399"/>
                 </View>
-            </KeyboardAvoidingView> 
+                {this.state.error &&
+                <Text style={{marginBottom: 10}}>{this.state.errorMessage}</Text>
+                }
+                <View style={styles.button}>
+                    <Button title={"Ok!"} onPress={this.Signup} color="#663399"/>
+                </View>
+            </KeyboardAvoidingView>
         )
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#77c9d4',
-      alignItems: 'center',   
-      justifyContent: 'center', 
+      alignItems: 'center',
+      justifyContent: 'center',
       width: "100%",
       height: "100%",
     },
@@ -133,17 +143,17 @@ const styles = StyleSheet.create({
     },
     button: {
     },
-    input: { 
+    input: {
         width: '100%',
-        padding: 10  
+        padding: 10
     },
     inputContainer: {
         height: 40,
         width: "60%",
-        backgroundColor: '#fff', 
-        marginBottom: 20, 
+        backgroundColor: '#fff',
+        marginBottom: 20,
         display: "flex",
         flexDirection: "row",
-        alignItems: "center",    
+        alignItems: "center",
     }
   });

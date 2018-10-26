@@ -16,11 +16,11 @@ export default class Login extends Component {
         if(!emailRegex.test(String(this.state.email).toLowerCase())){
             console.log("Email inválido.")
             this.setState({
-                error: true, 
+                error: true,
                 errorMessage: "Email inválido."
             })
         } else if(this.state.password.length < 6) {
-            console.log("Email inválido.")
+            console.log("Senha inválida.")
             this.setState({
                 error: true,
                 errorMessage: "Senha inválida."
@@ -36,10 +36,10 @@ export default class Login extends Component {
                     email
                 }
             }`
-            console.log(query) 
-            console.log(this.state) 
+            console.log(query)
+            console.log(this.state)
             try {
-                let response = await fetch('http://192.168.0.10:4000/graphql', {
+                let response = await fetch('http://192.168.43.190:4000/graphql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: query }),
@@ -47,7 +47,13 @@ export default class Login extends Component {
                 console.log(response)
                 let responseJson = await response.json()
                 console.log(responseJson.data)
-                this.props.onSignIn()
+                if(responseJson.data.verifyUser) this.props.onSignIn()
+                else {
+                  this.setState({
+                    error: true,
+                    errorMessage: "O usuário ou senha está incorreto."
+                  })
+                }
             } catch(err) {
                 console.log(err)
                 this.setState({
@@ -62,13 +68,13 @@ export default class Login extends Component {
     }
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>  
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <Text style={styles.title}>Wandy</Text>
                 <Text style={styles.text}>Bem-vindo!</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         underlineColorAndroid={'transparent'}
-                        style={styles.input} 
+                        style={styles.input}
                         onChangeText={(email) => {
                             this.setState({email})
                             console.log(email)
@@ -76,72 +82,73 @@ export default class Login extends Component {
                         value={this.state.email}
                         placeholder="E-mail"
                     />
-                </View> 
+                </View>
                 <View style={styles.inputContainer}>
-                    <TextInput 
+                    <TextInput
                         underlineColorAndroid={'transparent'}
                         style={styles.input}
                         onChangeText={(password) => {
                             this.setState({password})
-                            console.log(password) 
+                            console.log(password)
                         }}
                         value={this.state.password}
-                        placeholder="Senha" 
+                        placeholder="Senha"
                         secureTextEntry
                     />
                 </View>
-                
+                {this.state.error &&
+                  <Text style={{marginBottom: 10}}>{this.state.errorMessage}</Text>
+                }
                 <View style={styles.button}>
                     <Button title={"Entrar"} onPress={this.SignIn} color="#663399"/>
                 </View>
-
                 <View style={styles.button2}>
                     <Button title={"Sign Up"} onPress={this.SignUp} color="#663399"/>
                 </View>
-            </KeyboardAvoidingView> 
+            </KeyboardAvoidingView>
         )
     }
 }
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 60, 
+        fontSize: 60,
         marginBottom: 30,
-        fontFamily: 'monospace',  
-    },  
+        fontFamily: 'monospace',
+    },
     container: {
       flex: 1,
-      backgroundColor: '#77c9d4', 
+      backgroundColor: '#77c9d4',
       //backgroundColor: "#b0e0e6",
-      alignItems: 'center', 
-      justifyContent: 'center', 
+      alignItems: 'center',
+      justifyContent: 'center',
       width: "100%",
       height: "100%",
     },
     text: {
-      fontSize: 30,  
-      marginBottom: 50, 
-      color: "#808080", 
-    },  
+      fontSize: 30,
+      marginBottom: 50,
+      color: "#808080",
+    },
     button: {
     },
     button2: {
        position: 'absolute',
        bottom: 15,
-       right: 15,  
+       right: 15,
     },
-    input: { 
+    input: {
         width: '100%',
-        padding: 10  
+        padding: 10
     },
     inputContainer: {
         height: 40,
         width: "60%",
-        backgroundColor: '#fff', 
-        marginBottom: 20, 
+        backgroundColor: '#fff',
+        marginBottom: 20,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-         
+
     }
   });

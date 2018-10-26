@@ -36,7 +36,7 @@ var root = {
     const user = await models.User.findById(id)
     if (!user) {
       throw new Error('O usuário de id:' + id + ' não existe.');
-    } 
+    }
     return user;
   },
   createUser: async function({input}) {
@@ -52,14 +52,14 @@ var root = {
       const user = await models.User.create(input)
       return user;
     }
-    
+
   },
   updateUser: async function({id,input}) {
     const user = await models.User.findById(id)
     if (!user) {
       throw new Error('no user exists with id ' + id);
     } else {
-      const updatedUser = await models.User.update(id,input)
+      const updatedUser = await user.update(input)
       return updatedUser;
     }
   },
@@ -68,12 +68,12 @@ var root = {
       where: {
         email: email
       }
-    }) 
+    })
     if (!user){
       throw new Error("O usuário não existe")
     } else if(!(user.password === password)) {
       throw new Error("O usuário não existe")
-    } else { 
+    } else {
       return user
     }
   }
