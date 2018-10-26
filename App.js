@@ -7,31 +7,36 @@ export default class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      tela: "tela1",
+      tela: "signin",
     };
-    this._onPressButton = this._onPressButton.bind(this)
-    this._onPressButton2 = this._onPressButton2.bind(this)
+    this.onSignup = this.onSignup.bind(this)
+    this.onSignIn = this.onSignIn.bind(this)
+    this.onSendSignupForm = this.onSendSignupForm.bind(this)
   }
-  _onPressButton() {
-    //Alert.alert('Só a tora revigora :D');
+  onSignup() {
     this.setState({
-      tela: "tela2",
+      tela: "signup",
     });
   }
-  _onPressButton2() {
+  onSignIn() {
     this.setState({
-      tela: "tela1" 
+      tela: "signin" 
+    });
+  }
+  onSendSignupForm() {
+    this.setState({
+      tela: "signin"  
     });
   }
   
   render() { 
     return (
       <View style={styles.container}>
-        {this.state.tela === "tela1" &&
-          <Login onSignIn={this._onPressButton} /> 
+        {this.state.tela === "signin" &&
+          <Login onSignIn={this.onSignIn} onSignup={this.onSignup}/> 
         }
-        {this.state.tela === "tela2" &&
-        <Signup onSignup={this._onPressButton2}/>
+        {this.state.tela === "signup" &&
+          <Signup onSignup={this.onSendSignupForm}/>
         } 
       </View>  
     );  
